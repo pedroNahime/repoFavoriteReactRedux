@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as FavoriteActions from '../../store/actions/favorites'
+import {Creators as FavoriteActions} from "../../store/ducks/favorites";
 import PropTypes from 'prop-types'
 
 class Main extends Component {
@@ -14,9 +14,10 @@ class Main extends Component {
                 name: PropTypes.string,
                 description: PropTypes.string,
                 url: PropTypes.string
-            }))
+            })),
+            error: PropTypes.oneOf([null, PropTypes.string])
         }).isRequired
-    }
+    };
     state ={
         repositoryInput: ''
     };
@@ -38,6 +39,8 @@ class Main extends Component {
                     <button type="submit">Adicionar</button>
 
                     {this.props.favorites.loading && <span>Carregando...</span>}
+
+                    {!!this.props.favorites.error && <span style={{color: '#f00'}}>{this.props.favorites.error}</span>}
                 </form>
                 <ul>
                     {this.props.favorites.data.map(favorite => (
